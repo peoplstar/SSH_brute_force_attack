@@ -17,7 +17,48 @@ __대상자 IP__ : 192.168.203.130
 
 __OpenSSH-Server가 설치되어 있지 않는 경우 `apt-get install openssh*`로 설치한다.__ 
 
-`nmap` 포트스캐닝으로 대상 시스템의 SSH 포트가 open인지를 확인한다.   
+nmap 포트스캐닝으로 대상 시스템의 SSH 포트가 open인지를 확인한다.   
 `nmap [대상자 IP] -sV -p 22` 
    
 ![ssh_nmap-bef](https://user-images.githubusercontent.com/78135526/120059532-2cd4d700-c08d-11eb-9ed2-9a878f04904b.png)
+
+또한, 관리자의 접속 허가 혹은 불가 설정을 위해 `vi /etc/ssh/sshd_config`로 PermitRootLogin의 옵션을 주석 해제하여 ON 상태로 만든다.
+
+
+![permitrootlogin](https://user-images.githubusercontent.com/78135526/120060872-395d2d80-c095-11eb-88b4-62d351f70627.png)
+
+이 후, SSH 서버 접속을 위해 `service ssh start`로 시작 후 `service ssh status`로 **Active : active** 인지 확인한다.
+
+패스워드가 복잡할수록 시간이 많이 소요되므로 확인용으로 password를 0123으로 변경하겠습니다.
+
+SSH brute force attack이 성공적으로 되었는지를 확인하기 위해 대상자에 SSH.txt 파일을 만듭니다. _(이 과정을 생략해도 되겠습니다.)_
+
+_____
+## `iptables`
+
+22번 PORT를 열기 위해서는 LINUX에서 제공하는 `iptables`를 이용해 공격자에게 해당 포트를 허용합니다.
+
+`$ sudo iptables -A INPUT -p tcp --dport 22 -j ACCEPT`   
+`$ sudo iptables -A INPUT -p udp --dport 22 -j ACCEPT`   
+`iptables -L`를 통해 현재 22번 PORT가 어느곳에서든 허용한다는 것을 볼 수 있다. 
+
+![iptables](https://user-images.githubusercontent.com/78135526/120061139-bb018b00-c096-11eb-8136-5bc5d63eb490.png)
+____
+
+포트스캐닝으로 대상자의 IP를 확인해보면 OPEN 인 것을 알 수 있다.
+
+![nmap_aft](https://user-images.githubusercontent.com/78135526/120061261-585cbf00-c097-11eb-9ae1-998bcffe5693.png)
+
+모든 준비는 끝났고, 이제 `hydra` 명령어로 무차별 대입공격을 시도한다.
+
+(root@kali)~#`hydra -l root 4:4:1 [대상자 IP] ssh -V -f`
++ -l : 아이디
++ -L : 아이디 리스트 파일
++ -p : 비밀번호
++ -P : 비밀번호 사전 파일
++ -x 4:4:1 : 최소 4자리 : 최대 4자리 : 숫자로 되어 있는 비밀번호
++ -v : 자세히 
++ -V : login + 비밀번호 Vision
++ -f : 비밀번호 발견시 종료
+
+`hydra -l root 4:4:1 
