@@ -19,7 +19,7 @@ __OpenSSH-Server가 설치되어 있지 않는 경우 `apt-get install openssh*`
 
 nmap 포트스캐닝으로 대상 시스템의 SSH 포트가 open인지를 확인한다.   
 `nmap [대상자 IP] -sV -p 22` 
-   
+    
 ![ssh_nmap-bef](https://user-images.githubusercontent.com/78135526/120061661-382dff80-c099-11eb-9456-3fd4806692fd.png)
 
 또한, 관리자의 접속 허가 혹은 불가 설정을 위해 `vi /etc/ssh/sshd_config`로 PermitRootLogin의 옵션을 주석 해제하여 ON 상태로 만든다.
