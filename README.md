@@ -1,4 +1,4 @@
-# SSH_SSL
+# SSH
 **It is illegal to practice on unauthorized systems. This is for learning, so please use a virtual machine to study.**
 
 > SSH
