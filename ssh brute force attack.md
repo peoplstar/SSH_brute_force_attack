@@ -19,4 +19,5 @@ __OpenSSH-Server가 설치되어 있지 않는 경우 `apt-get install openssh*`
 
 `nmap` 포트스캐닝으로 대상 시스템의 SSH 포트가 open인지를 확인한다.   
 `nmap [대상자 IP] -sV -p 22` 
+   
 ![ssh_nmap-bef](https://user-images.githubusercontent.com/78135526/120059532-2cd4d700-c08d-11eb-9ed2-9a878f04904b.png)
